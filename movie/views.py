@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from rest_framework import generics, status
+from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from .models import Movie
 from .serializers import MovieSerializer
@@ -14,9 +14,24 @@ class MovieList(generics.ListCreateAPIView):
     """
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+
+    permission_classes = [
+        permissions.IsAuthenticatedOrReadOnly
+    ]
+
     filter_backends = (OrderingFilter, SearchFilter)
     search_fields = ['title', 'rated', 'plot']
     ordering_fields = ['title', 'rated', 'plot', 'year']
+
+    def post(self, request):
+        serializer = MovieSerializer(
+            data=request.data, context={'request': request}
+        )
+        if serializer.is_valid():
+            serializer.save(editor=request.user)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class MovieDetail(generics.RetrieveAPIView):
@@ -49,4 +64,4 @@ class MovieDetail(generics.RetrieveAPIView):
             serializer.save()
             return Response(serializer.data)
         else:
-            Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
