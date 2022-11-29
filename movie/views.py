@@ -25,6 +25,9 @@ class MovieList(generics.ListCreateAPIView):
     search_fields = ['title', 'rated', 'plot']
     ordering_fields = ['title', 'rated', 'plot', 'year']
 
+    def perform_create(self, serializer):
+        serializer.save(editor=self.request.user)
+
 
 class MovieDetail(generics.RetrieveUpdateDestroyAPIView):
     """
