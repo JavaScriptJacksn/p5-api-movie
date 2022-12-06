@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Movie
 from reviews.models import Review
 from reviews.serializers import ReviewSerializer
+from django.contrib.humanize.templatetags.humanize import naturaltime
 
 
 class MovieSerializer(serializers.ModelSerializer):
@@ -17,7 +18,6 @@ class MovieSerializer(serializers.ModelSerializer):
     def get_reviews(self, obj):
         queryset = Review.objects.filter(movie=obj.id)
         return ReviewSerializer(queryset, many=True).data
-
 
     class Meta:
         model = Movie
