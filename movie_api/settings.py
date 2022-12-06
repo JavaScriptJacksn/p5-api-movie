@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import os
+import re
 import dj_database_url
 from pathlib import Path
 
@@ -37,7 +38,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = 'DEV' in os.environ
 
 ALLOWED_HOSTS = [
-    'https://drf-movie-app.herokuapp.com',
+    os.environ.get('ALLOWED_HOST'),
     'localhost'
 ]
 
@@ -80,18 +81,15 @@ REST_FRAMEWORK = {
     'DATETIME_FORMAT': '%d %b %Y',
 }
 
-# if 'DEV' not in os.environ:
-#     REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = [
-#         'restframework.renderers.JSONRenderer'
-#     ]
+if 'DEV' not in os.environ:
+    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = [
+        'restframework.renderers.JSONRenderer'
+    ]
 
 
 REST_USE_JWT = True
-
-JWT_AUTH_COOKIE = 'my-app-auth'
-
 JWT_AUTH_SECURE = True
-
+JWT_AUTH_COOKIE = 'my-app-auth'
 JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
 
 MIDDLEWARE = [
@@ -118,7 +116,6 @@ CORS_ALLOW_CREDENTIALS = True
 
 JWT_AUTH_SAMESITE = 'None'
 
-
 ROOT_URLCONF = 'movie_api.urls'
 
 TEMPLATES = [
@@ -144,8 +141,8 @@ WSGI_APPLICATION = 'movie_api.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
-}
+        'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
+    }
 
 
 # Password validation
