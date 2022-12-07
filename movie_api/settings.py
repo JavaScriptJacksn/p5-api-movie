@@ -39,7 +39,7 @@ DEBUG = 'DEV' in os.environ
 
 ALLOWED_HOSTS = [
     os.environ.get('ALLOWED_HOST'),
-    'https://drf-movie-app.herokuapp.com',
+    'drf-movie-app.herokuapp.com',
     'localhost'
 ]
 
