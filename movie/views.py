@@ -21,9 +21,10 @@ class MovieList(generics.ListCreateAPIView):
         permissions.IsAuthenticatedOrReadOnly
     ]
 
-    filter_backends = (OrderingFilter, SearchFilter)
+    filter_backends = (OrderingFilter, SearchFilter, DjangoFilterBackend)
     search_fields = ['title', 'rated', 'plot']
     ordering_fields = ['title', 'rated', 'plot', 'year']
+    filterset_fields = ['editor']
 
     def perform_create(self, serializer):
         serializer.save(editor=self.request.user)
