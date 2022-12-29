@@ -1,108 +1,96 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# Movie Night API
 
-Welcome JavaScriptJacksn,
+The Movie Night API was developed and is being used for the Movie Night React application. Stemming from an Imdb-esque concept of a movie review site, the Restful API provdies CRUD functionality and data persistence of movies, reviews and users.
 
-This is the Code Institute student template for Gitpod. We have preinstalled all of the tools you need to get started. It's perfectly ok to use this template as the basis for your project submissions.
+This is documentation relating to the development of the Movie Night API.
 
-You can safely delete this README.md file, or change it for your own project. Please do read it at least once, though! It contains some important information about Gitpod and the extensions we use. Some of this information has been updated since the video content was created. The last update to this file was: **September 1, 2021**
+[Deployed API](https://drf-movie-app.herokuapp.com)
 
-## Gitpod Reminders
+[Deployed Front End](https://movie-night-p5.herokuapp.com/)
 
-To run a frontend (HTML, CSS, Javascript only) application in Gitpod, in the terminal, type:
+[Front End Repository](https://github.com/JavaScriptJacksn/movie-night-frontend)
 
-`python3 -m http.server`
 
-A blue button should appear to click: _Make Public_,
+## User Stories
 
-Another blue button should appear to click: _Open Browser_.
+All user stories were documented on the GitHUb projects Kanban board attached to this repository. The same User stories below were used in the development of the front-end application.
 
-To run a backend Python file, type `python3 app.py`, if your Python file is named `app.py` of course.
 
-A blue button should appear to click: _Make Public_,
+Some user stories were moved into the 'In Progress' section so they can be seen in the screenshot, but all were completed and tested.
 
-Another blue button should appear to click: _Open Browser_.
+<img src="./assets/kanban2.png" alt="kanban board user stories" width="750"/>.
 
-In Gitpod you have superuser security privileges by default. Therefore you do not need to use the `sudo` (superuser do) command in the bash terminal in any of the lessons.
 
-To log into the Heroku toolbelt CLI:
+## Database
 
-1. Log in to your Heroku account and go to *Account Settings* in the menu under your avatar.
-2. Scroll down to the *API Key* and click *Reveal*
-3. Copy the key
-4. In Gitpod, from the terminal, run `heroku_config`
-5. Paste in your API key when asked
+The database schema is simple and effective. At the intial conceptualisation of the project more models and functionality were planned and still are for future personal additions.
 
-You can now use the `heroku` CLI program - try running `heroku apps` to confirm it works. This API key is unique and private to you so do not share it. If you accidentally make it public then you can create a new one with _Regenerate API Key_.
+Part of this reasoning was due to the removal of the free teir on Heroku. Whilst the CI were amazing at locating Elephant SQL as a suitable replacement PostgreSQL database, I took this opportunity to use mongoDB, which I had used previously with Spring Boot in Java to great success. Another bonus was the MongoDB Atlas AWS server hosting which had a free use option, along with a movie sample database that perfectly fit sample data for this project.
 
-------
+However, as I found out after weeks of trial and error, that even with the djongo library, despite my best efforts, Django was not yet optimised for mongoDB and roadblock after roadblock workintg with ObjectIds, almost all of the code I had to re-write.
 
-## Release History
+A bitter truth I've come to learn is sometimes this is inevitable and the determination to continue down a failing path would have caused more trouble later down the line.
 
-We continually tweak and adjust this template to help give you the best experience. Here is the version history:
+Nevertheless, I used Elephant SQL and it worked perfectly and was much better suited to handle relational data, something I had planned to be a small feature by design to accomodate MongoDB.
 
-**September 1 2021:** Remove `PGHOSTADDR` environment variable.
+However, I still used the sample data from MongoDB Atlas 'sample_mflix' using the DRF UI and manually inputting movies which was a positive to take from this.
 
-**July 19 2021:** Remove `font_fix` script now that the terminal font issue is fixed.
+<img src="./assets/db diagram.png" alt="database diagram" width="750"/>.
 
-**July 2 2021:** Remove extensions that are not available in Open VSX.
+Note: The movies table should include a 'poster' field, but this was added later
 
-**June 30 2021:** Combined the P4 and P5 templates into one file, added the uptime script. See the FAQ at the end of this file.
+## Testing
 
-**June 10 2021:** Added: `font_fix` script and alias to fix the Terminal font issue
+All files passed through the Code Institute python linter, with the only exceptions being line too long messages in files generated by Django, such as settings.py
 
-**May 10 2021:** Added `heroku_config` script to allow Heroku API key to be stored as an environment variable.
 
-**April 7 2021:** Upgraded the template for VS Code instead of Theia.
+<img src="./assets/pep8.png" alt="python validator results" width="750"/>.
 
-**October 21 2020:** Versions of the HTMLHint, Prettier, Bootstrap4 CDN and Auto Close extensions updated. The Python extension needs to stay the same version for now.
+### Manual tests performed
 
-**October 08 2020:** Additional large Gitpod files (`core.mongo*` and `core.python*`) are now hidden in the Explorer, and have been added to the `.gitignore` by default.
+- Movies
+- - All movie get requests to correct urls return expected results
+- - All movie put requests update the correct movie and persist to the database
+- - All movie delete requests delete the correct review and persist to the database
+- - On the correct url, movies can be filtered and searched using query params and the DRF development UI
+- Reviews
+- - All reviews can be returned using a get request to the correct url
+- - All review put requests update the correct movie and persist to the database
+- - All review delete requests delete the correct review and persist to the database
+- Authentication
+- - Users can sign up and have their details securely saved to the database
+- - Users are issued JWT authentication tokens and refresh tokens to allow browser sessions
 
-**September 22 2020:** Gitpod occasionally creates large `core.Microsoft` files. These are now hidden in the Explorer. A `.gitignore` file has been created to make sure these files will not be committed, along with other common files.
+### Unfixed Bugs
 
-**April 16 2020:** The template now automatically installs MySQL instead of relying on the Gitpod MySQL image. The message about a Python linter not being installed has been dealt with, and the set-up files are now hidden in the Gitpod file explorer.
+- None
 
-**April 13 2020:** Added the _Prettier_ code beautifier extension instead of the code formatter built-in to Gitpod.
+### Fixed Bugs
 
-**February 2020:** The initialisation files now _do not_ auto-delete. They will remain in your project. You can safely ignore them. They just make sure that your workspace is configured correctly each time you open it. It will also prevent the Gitpod configuration popup from appearing.
+- CORS 401 error
+- - Solved by adding the deployed front end app domain to the CLIENT_ORIGIN enviroment variable
 
-**December 2019:** Added Eventyret's Bootstrap 4 extension. Type `!bscdn` in a HTML file to add the Bootstrap boilerplate. Check out the <a href="https://github.com/Eventyret/vscode-bcdn" target="_blank">README.md file at the official repo</a> for more options.
+## Technologies Used
 
-------
+- Python
+- Django (& associated middleware)
+- PostgreSQL
+- Cloudinary
+- Heroku
 
-## FAQ about the uptime script
+## Deployment
 
-**Why have you added this script?**
+### Steps for deployment
 
-It will help us to calculate how many running workspaces there are at any one time, which greatly helps us with cost and capacity planning. It will help us decide on the future direction of our cloud-based IDE strategy.
-
-**How will this affect me?**
-
-For everyday usage of Gitpod, it doesn’t have any effect at all. The script only captures the following data:
-
-- An ID that is randomly generated each time the workspace is started.
-- The current date and time
-- The workspace status of “started” or “running”, which is sent every 5 minutes.
-
-It is not possible for us or anyone else to trace the random ID back to an individual, and no personal data is being captured. It will not slow down the workspace or affect your work.
-
-**So….?**
-
-We want to tell you this so that we are being completely transparent about the data we collect and what we do with it.
-
-**Can I opt out?**
-
-Yes, you can. Since no personally identifiable information is being captured, we'd appreciate it if you let the script run; however if you are unhappy with the idea, simply run the following commands from the terminal window after creating the workspace, and this will remove the uptime script:
-
-```
-pkill uptime.sh
-rm .vscode/uptime.sh
-```
-
-**Anything more?**
-
-Yes! We'd strongly encourage you to look at the source code of the `uptime.sh` file so that you know what it's doing. As future software developers, it will be great practice to see how these shell scripts work.
-
----
-
-Happy coding!
+1) Create a Heroku app
+2) Set the following config variables:
+    - SECRET_KEY = any secret key
+    - CLOUDINARY_URL = cloudinary remote media storage url
+    - ALLOWED_HOST = deployed domain
+    - DISABLE_COLLECTSTATIC = 1
+    - CLIENT_ORIGIN = deployed front end domain
+    - CLIENT_ORIGIN_DEV (only for development of the front end)
+    - DATABASE_URL = ElephantSQL database connection url
+3) Scroll down under the 'deploy' tab to link the app to the GitHub repository
+4) Click 'deploy branch'
+5) Enjoy Movie Night API
