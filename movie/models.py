@@ -10,7 +10,8 @@ class Movie(models.Model):
         User, on_delete=models.CASCADE, related_name="movies_added"
     )
     plot = models.TextField(blank=True)
-    runtime = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(500)])
+    runtime = models.PositiveIntegerField(validators=[MinValueValidator(1),
+                                          MaxValueValidator(500)])
 
     CHOICES = (
         ("UNRATED", "Unrated"),
@@ -24,7 +25,8 @@ class Movie(models.Model):
     poster = models.ImageField(
         upload_to='posters/', default='../default-poster_u5tci8.jpg'
     )
-    year = models.PositiveIntegerField(validators=[MinValueValidator(1900), MaxValueValidator(2030)])
+    year = models.PositiveIntegerField(validators=[MinValueValidator(1900),
+                                       MaxValueValidator(2030)])
     lastupdated = models.DateField(auto_now=True)
 
     class Meta:

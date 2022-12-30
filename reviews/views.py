@@ -9,7 +9,13 @@ class ReviewList(generics.ListCreateAPIView):
 
     serializer_class = ReviewSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    queryset = Review.objects.all()
+
+    def get_queryset(self):
+        queryset = Review.objects.all()
+        movie = self.request.query_params.get('movie')
+        if movie is not None:
+            queryset = queryset.filter(movie=movie)
+        return queryset
 
     def perform_create(self, serializer):
         serializer.save(editor=self.request.user)
