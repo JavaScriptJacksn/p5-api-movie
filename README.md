@@ -69,6 +69,8 @@ All files passed through the Code Institute python linter, with the only excepti
 
 - CORS 401 error
 - - Solved by adding the deployed front end app domain to the CLIENT_ORIGIN enviroment variable
+- Reviews not being retrieved using movie id as a query param
+ - Fixed by adding 'get queryset' function to Review views.py
 
 ## Technologies Used
 
